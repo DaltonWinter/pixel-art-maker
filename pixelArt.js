@@ -1,36 +1,19 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-  function colorGrabber(event)
-  {
-    var current = document.getElementsByClassName('pink')
-    var currentColor = document.createElement("div");
+var currentColor = '';
+// var current = document.getElementByClassName("current")[0];
 
-    var myId = event.target.style.backgroundColor;
-    current.style.backgroundColor = currentColor;
+function newColor () {
+  currentColor = event.target.style.backgroundColor;
+  // current.style.backgroundColor = currentColor;
+}
 
-  }
-  function colorAllocator(event)
-  {
-
-
-
-
-
-
-  }
-
-  function divAdder()
-  {
+//creates container for grid
     var pixelContainer=document.createElement("div");
-    pixelContainer.setAttribute("id", "pixelContainer");
-    document.body.appendChild(pixelContainer);
-    var colorPallet=document.createElement("div");
-    colorPallet.setAttribute("id", "colorPallet");
-    colorPallet.addEventListener("click", colorGrabber);
+    pixelContainer.setAttribute("id", "pixelContainer"); //** pixelContainer???
 
-    for(var i=0; i<704; i++)
-    {
-
+//grid
+    for(var i=0; i<704; i++){
       var id="divId";
       var element=document.createElement("div");
       element.style.height = "30px";
@@ -38,56 +21,48 @@ document.addEventListener("DOMContentLoaded", function() {
       element.style.border = "1px solid black"
       element.style.cssFloat = "left"
       element.style.display = "inline-block"
+      element.addEventListener('mouseenter', paint);
+      element.addEventListener('click', clicker)
+      document.body.appendChild(pixelContainer);
       pixelContainer.appendChild(element);
     }
 
-      function handler(event) {
-        event.target.classList.add(".pink")
-
-      }
-
-      var colorPallette = document.createElement('div');
-      colorPallette.id = "colorBoard";
-     document.body.appendChild(colorPallette);
-
-     for (i=0; i<6; i++) {
+    //pallette creation
+     var colorPallette=document.createElement("div");
+     var colorArr = ["blue", "red", "green", "black", "purple", "white"];
+     for (j=0; j<colorArr.length; j++) {
        var color = document.createElement('div');
+       color.style.backgroundColor=colorArr[j];
        color.style.width='50px';
        color.style.height='50px';
        color.style.border='5px solid black';
        color.style.display='inline-block';
        color.style.cssFloat='left';
        color.style.borderRadius='25px';
+       color.addEventListener('click', newColor);
        colorPallette.appendChild(color);
+       document.body.appendChild(colorPallette)
      }
-  }
 
+     var mouseState = false;
+     function clicker() {
+       event.target.style.backgroundColor = currentColor || 'white';
+     }
 
+     function paint() {
+       element.addEventListener('mousedown', function() {
+         mouseState = true;
+       });
 
+       pixelContainer.addEventListener('mouseup', function(){
+         mouseState = false;
+       });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  divAdder();
-
-
-
-});
+     if (mouseState === true) {
+       event.target.style.backgroundColor = currentColor || 'white';
+      }
+     }
+     function pixelHandler(event) {
+       event.target.classList.add('filled');
+     }
+  })
